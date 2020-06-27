@@ -11,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/hellodoli/iz-string-template"
   },
   "author": "PHAT",
   "license": "ISC",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/hellodoli/iz-string-template/issues"
   },
   "homepage": "",
   "devDependencies": {

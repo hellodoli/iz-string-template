@@ -24,14 +24,16 @@ class HTMLCommentStyle extends CommentStyle {
       this.last;
 
     if (bodyLength <= 0 || rootString.length < flLength + deco.length * 2 + 5)
-      // 5 is <!-- --> , '-'*4
-      return { rootString, finalString };
+      return {
+        rootString,
+        finalString,
+      };
 
     if (input) {
       const l = input.length;
       const rsl = rootString.length;
-      const maxInputLength = rsl - (flLength + deco.length * 2 + 4);
 
+      const maxInputLength = rsl - (flLength + deco.length * 2 + 4);
       if (l > 0 && l <= maxInputLength) {
         if (this.options.text === textOptions.center) {
           const firstLength = parseInt(rsl / 2, 10) - parseInt(l / 2, 10);
