@@ -1,9 +1,9 @@
 import { commentType } from '../constant/commentType';
-import { defaultOptions } from '../constant/options';
+import { defaultOptions, syntaxOptions } from '../constant/options';
 
 function isValidType(type) {
-  const { custom, html } = commentType;
-  if (type === html || type === custom) return true;
+  const { custom, html, js } = commentType;
+  if (type === html || type === js || type === custom) return true;
   return false;
 }
 
@@ -16,4 +16,14 @@ function isValidOptions(options, type) {
   return false;
 }
 
-export { isValidType, isValidOptions };
+function isValidSyntax(syntax) {
+  const { line, block1, block2 } = syntaxOptions;
+  if (syntax === line || syntax === block1 || syntax === block2) return true;
+  return false;
+}
+
+function isArray(arr) {
+  return Object.prototype.toString.call(arr) === '[object Array]';
+}
+
+export { isValidType, isValidOptions, isValidSyntax, isArray };

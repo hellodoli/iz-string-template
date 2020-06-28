@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IZ-template-string</title>
+    <!-- BS4 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <form id="submitForm">
+          <div class="form-group">
+            <select id="selectType" class="custom-select">
+              <option selected>Select type</option>
+              <option value="html">HTML comment</option>
+              <option value="js">JS comment</option>
+            </select>
+          </div>
+          <!-- -->
+          <div class="form-group">
+            <label>Options:</label>
+          </div>
+          
+          <button id="btnGenerate" type="submit">Generate</button>
+        </form>
+      </div>
+      <pre id="out"></pre>
+    </div>
+    
+
+    
+    <!-- comments-generate.js -->
+    <script src="../dist/comments-generate.js"></script>
+    <!-- scripr for this demo -->
+    <script src="./app.js"></script>
+  </body>
+</html>

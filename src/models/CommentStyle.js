@@ -8,6 +8,10 @@ class CommentStyle {
     this.options = cs.options;
   }
 
+  getType() {
+    return this.type;
+  }
+
   getOptions() {
     return this.options;
   }

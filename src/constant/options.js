@@ -1,27 +1,30 @@
 import { commentType } from './commentType';
 
 const textOptions = {
-  top: 'textOptionsTop',
-  bottom: 'textOptionsBottom',
-  left: 'textOptionsLeft',
-  right: 'textOptionsRight',
-  center: 'textOptionsCenter',
-  mid: 'textOptionsCenter',
+  top: 'top',
+  bottom: 'bottom',
+  left: 'left',
+  right: 'right',
+  center: 'center',
+  mid: 'center',
 };
 
-const baseOption = {
-  text: textOptions.center,
-  length: 20,
+const syntaxOptions = {
+  line: 'line',
+  block1: 'block1',
+  block2: 'block2',
 };
 
 const defaultOptions = {
   [commentType.html]: {
-    ...baseOption,
+    text: textOptions.center,
+    length: 20,
     deco: ' ',
   },
-  [commentType.custom]: {
-    ...baseOption,
+  [commentType.js]: {
+    syntax: syntaxOptions.line,
+    text: textOptions.center,
   },
 };
 
-export { defaultOptions, textOptions };
+export { defaultOptions, textOptions, syntaxOptions };

@@ -1,21 +1,19 @@
 import { commentType } from './constant/commentType';
 import HTMLCommentStyle from './models/HTMLCommentStyle';
+import JSCommentStyle from './models/JSCommentStyle';
 
-const htmlCommentStyle = new HTMLCommentStyle(
-  commentType.html,
-  {
-    length: 20,
-  },
-  {}
-);
+(function () {
+  function CommentTemplate(type, options = {}) {
+    let instance = null;
+    if (type === commentType.html) {
+      instance = new HTMLCommentStyle(type, options);
+    } else if (type === commentType.js) {
+      instance = new JSCommentStyle(type, options);
+    } else {
+      instance = new HTMLCommentStyle(type, options);
+    }
+    return instance;
+  }
 
-window.onload = function () {
-  const val = document.getElementById('val');
-  const btn = document.getElementById('btn');
-  const out = document.getElementById('out');
-  btn.addEventListener('click', () => {
-    const string = htmlCommentStyle.getString(val.value).finalString;
-    console.log(htmlCommentStyle.getString(val));
-    out.textContent = string;
-  });
-};
+  window.CommentTemplate = CommentTemplate;
+}.call(this));

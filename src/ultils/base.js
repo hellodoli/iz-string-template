@@ -1,6 +1,6 @@
 import { commentType } from '../constant/commentType';
-import { defaultOptions } from '../constant/options';
-import { isValidType, isValidOptions } from './checker';
+import { defaultOptions, syntaxOptions } from '../constant/options';
+import { isValidType, isValidOptions, isValidSyntax } from './checker';
 
 /* 
   ! Before pass <type> param, <type> must pass by checker.isValidType
@@ -25,6 +25,34 @@ function getOptions(options, type) {
   return newOptions;
 }
 
+/* 
+  ! Before pass <syntax> param, <syntax> must pass by checker.isValidSyntax
+  * (checker from ./checker.js)
+*/
+function getSyntax(syntax) {
+  let s = syntax;
+  if (!isValidSyntax(s)) s = syntaxOptions.line;
+  return s;
+}
+
+/*
+  ! Make sure <syntax> is valid.
+*/
+function getSymbol(syntax) {
+  const symbol = {};
+  if (syntax === syntaxOptions.block1) {
+    symbol.first = '/*';
+    symbol.last = '*/';
+  } else if (syntax === syntaxOptions.block2) {
+    symbol.first = '/**';
+    symbol.last = '*/';
+  } else {
+    symbol.first = '//';
+    symbol.last = '';
+  }
+  return symbol;
+}
+
 /*
  * Build constructor params
  */
@@ -36,4 +64,4 @@ function build(type, options) {
   };
 }
 
-export { getOptions, build };
+export { getType, getOptions, build, getSymbol, getSyntax };
