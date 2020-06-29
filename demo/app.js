@@ -14,9 +14,6 @@ console.log(
     '',
   ])
 ); */
-
-const count = 0;
-
 const id = {
   // input
   form: 'submitForm',
@@ -29,9 +26,8 @@ const id = {
   // input - js comment
   selectOptionSyntax: 'selectOptionSyntax',
   inputJSComment: 'inputJSComment',
-  btnAddComment: 'btnAddComment',
   // render parent DOM
-  renderZone: 'renderZone',
+  renderInputZone: 'renderInputZone',
   renderOptionsZone: 'renderOptionsZone',
   renderCommentZone: 'renderCommentZone',
   renderInputJSComment: 'renderInputJSCommentZone',
@@ -42,6 +38,9 @@ const id = {
 const htmlString = {
   formGroupWrapper(html) {
     return `<div class="form-group">${html}</div>`;
+  },
+  renderWrapper(idDOM, html) {
+    return `<div id="${idDOM}">${html}</div>`;
   },
   options: {
     label: '<label>Options</label>',
@@ -65,9 +64,8 @@ const htmlString = {
   },
   userInput: {
     label: '<label>Comment</label>',
-    inputHTMLComment: `<textarea id="${id.inputHTMLComment}" placeholder="Write your comment here ..." class="form-control" rows="5"></textarea>`,
-    inputJSComment: `<input id="${id.inputJSComment}${count}" type="text" class="form-control" />`,
-    btnAddCommentJS: `<button id="${id.btnAddComment}" class="btn">Add Comment Block</button>`,
+    inputHTMLComment: `<textarea id="${id.inputHTMLComment}" placeholder="Write your comment here ..." class="form-control" rows="3"></textarea>`,
+    inputJSComment: `<textarea id="${id.inputJSComment}" placeholder="Write your comment here ..." class="form-control" rows="5"></textarea>`,
   },
 };
 
@@ -80,6 +78,7 @@ let valid = {
 
 let currentType = null;
 
+/* Helper function */
 function resetValid() {
   valid = {
     options: {
@@ -89,6 +88,30 @@ function resetValid() {
   };
 }
 
+function renderInputZone() {
+  const {
+    renderWrapper,
+    formGroupWrapper,
+    options: { label: optionLabel, text, length, deco, syntax },
+    userInput: { label: userInputLabel, inputHTMLComment, inputJSComment },
+  } = htmlString;
+
+  const optionHTML =
+    currentType === 'html'
+      ? optionLabel +
+        formGroupWrapper(text) +
+        formGroupWrapper(length) +
+        formGroupWrapper(deco)
+      : optionLabel + formGroupWrapper(syntax);
+  const optionZone = renderWrapper(id.renderOptionsZone, optionHTML);
+  const commentHTML =
+    currentType === 'html'
+      ? formGroupWrapper(userInputLabel + inputHTMLComment)
+      : formGroupWrapper(userInputLabel + inputJSComment);
+  const commentZone = renderWrapper(id.renderCommentZone, commentHTML);
+  return optionZone + commentZone;
+}
+
 function createHelperTextNode(status, text) {
   const small = document.createElement('small');
   small.className = `text-${status}`;
@@ -96,6 +119,7 @@ function createHelperTextNode(status, text) {
   return small;
 }
 
+/* onChange Input Event */
 function onInputLengthChange(e) {
   const ele = e.target;
   const numLength = parseInt(ele.value);
@@ -135,13 +159,15 @@ function onInputDecoChange(e) {
 function onSelectSyntaxChange(e) {
   const ele = e.target;
   const { value } = ele;
+  const inputJSComment = document.getElementById(id.inputJSComment);
+  const nextEle = inputJSComment.nextElementSibling;
+  if (nextEle) inputJSComment.parentElement.removeChild(nextEle);
   if (value === 'block1' || value === 'block2') {
-    if (!document.getElementById(id.renderInputJSComment)) {
-      const html = '';
-      const parent = ele.parentElement;
-      parent.insertAdjacentHTML('afterend', `<div id="two">two</div>`);
-    }
-  } else {
+    const helperText = createHelperTextNode(
+      'muted',
+      '*Every comment end with "." e.g Hello.Hi.I"m comment line'
+    );
+    inputJSComment.parentElement.appendChild(helperText);
   }
 }
 
@@ -185,35 +211,29 @@ function onSelectTypeChange(e) {
   resetValid();
   // remove prev Eventlistener
   toggleEventDynamic('remove');
-  const {
-    formGroupWrapper,
-    options: { label: optionLabel, text, length, deco, syntax },
-    userInput: { label: userInputLabel, inputHTMLComment, inputJSComment },
-  } = htmlString;
-  const html =
-    currentType === 'html'
-      ? optionLabel +
-        formGroupWrapper(text) +
-        formGroupWrapper(length) +
-        formGroupWrapper(deco) +
-        formGroupWrapper(userInputLabel + inputHTMLComment)
-      : optionLabel +
-        formGroupWrapper(syntax) +
-        formGroupWrapper(userInputLabel + inputJSComment);
-
-  // render options HTML
-  render(html, document.getElementById(id.renderZone));
+  // render option & comment HTML
+  render(renderInputZone(), document.getElementById(id.renderInputZone));
+  valid.options.length = true; // default
   // add Eventlistener
   toggleEventDynamic('add');
 }
 
+/* submit Form Event */
 function onSubmit(e) {
   e.preventDefault();
   console.log('submit');
-  if (valid.options.length === true && valid.options.deco === true) {
-    console.log('start generate');
-  } else {
-    alert('Input invalid !!!');
+  if (currentType === null) return;
+  if (currentType === 'html') {
+    const input = document.getElementById(id.inputHTMLComment);
+    if (input.value.trim() === '') return;
+    console.log(valid);
+    if (valid.options.length === true && valid.options.deco === true) {
+      console.log('generate - html');
+    }
+  } else if (currentType === 'js') {
+    const input = document.getElementById(id.inputJSComment);
+    if (input.value.trim() === '') return;
+    console.log('generate - js');
   }
 }
 
