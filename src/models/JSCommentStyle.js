@@ -22,22 +22,22 @@ class JSCommentStyle extends CommentStyle {
       if (l > 0) {
         const { syntax } = this.options;
         if (syntax === syntaxOptions.block1) {
-          const first =
-            input[0].trim() === ''
-              ? this.first
-              : this.first + this.space + input[0].trim();
-          const last = input[input.length - 1].trim()
-            ? this.last
-            : input[input.length - 1].trim() + this.space + this.last;
-          finalString = input
-            .map((row, index) => {
-              const r = row.trim();
-              const space = r === '' ? r : this.space;
-              if (index === 0) return `${this.first}${space}${r}`;
-              if (index === input.length - 1) return `${r}${space}${this.last}`;
-              return r;
-            })
-            .join('\n');
+          if (input.length === 1) {
+            const r = input[0].trim();
+            const space = r === '' ? r : this.space;
+            finalString = this.first + space + r + space + this.last;
+          } else {
+            finalString = input
+              .map((row, index) => {
+                const r = row.trim();
+                const space = r === '' ? r : this.space;
+                if (index === 0) return `${this.first}${space}${r}`;
+                if (index === input.length - 1)
+                  return `${r}${space}${this.last}`;
+                return r;
+              })
+              .join('\n');
+          }
         } else if (syntax === syntaxOptions.block2) {
           finalString = input.map((row, index) => {
             const r = row.trim();
