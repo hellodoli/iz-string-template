@@ -29,10 +29,15 @@ class JSCommentStyle extends CommentStyle {
           const last = input[input.length - 1].trim()
             ? this.last
             : input[input.length - 1].trim() + this.space + this.last;
-          finalString = input.map((row) => row.trim());
-          finalString.unshift(first); // first
-          finalString.push(last); // last
-          finalString = finalString.join('\n');
+          finalString = input
+            .map((row, index) => {
+              const r = row.trim();
+              const space = r === '' ? r : this.space;
+              if (index === 0) return `${this.first}${space}${r}`;
+              if (index === input.length - 1) return `${r}${space}${this.last}`;
+              return r;
+            })
+            .join('\n');
         } else if (syntax === syntaxOptions.block2) {
           finalString = input.map((row, index) => {
             const r = row.trim();

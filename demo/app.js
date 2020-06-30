@@ -251,7 +251,7 @@ function onSubmit(e) {
       syntax: document.getElementById(id.selectOptionSyntax).value,
     };
     const jsComment = new CommentTemplate('js', options);
-    const array = input.value.split('.');
+    const array = input.value.trim().split('.');
     const { rootString, finalString } = jsComment.getString(array);
     const html =
       `<div>rootString: ${rootString}</div>` +
