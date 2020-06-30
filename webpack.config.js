@@ -36,12 +36,12 @@ const config = {
       },
     ],
   },
-  plugins: [
+  /*plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: './index.html',
     }),
-  ],
+  ],*/
 };
 
 module.exports = config;

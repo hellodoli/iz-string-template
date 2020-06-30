@@ -32,7 +32,7 @@ const id = {
   renderCommentZone: 'renderCommentZone',
   renderInputJSComment: 'renderInputJSCommentZone',
   // output
-  renderOutput: 'renderOutputZone',
+  renderOutputZone: 'renderOutputZone',
 };
 
 const htmlString = {
@@ -226,14 +226,38 @@ function onSubmit(e) {
   if (currentType === 'html') {
     const input = document.getElementById(id.inputHTMLComment);
     if (input.value.trim() === '') return;
-    console.log(valid);
     if (valid.options.length === true && valid.options.deco === true) {
       console.log('generate - html');
+      const options = {
+        text: document.getElementById(id.selectOptionText).value,
+        length: document.getElementById(id.inputLength).value,
+        deco: document.getElementById(id.inputDeco).value,
+      };
+      const htmlComment = new CommentTemplate('html', options);
+      const { rootString, finalString } = htmlComment.getString(input.value);
+      const html =
+        `<div>rootString: ${rootString}</div>` +
+        `<div>finalString: ${finalString}</div>`;
+      console.log('stringHTML: ', html);
+      document.getElementById(id.renderOutputZone).textContent = finalString;
     }
   } else if (currentType === 'js') {
     const input = document.getElementById(id.inputJSComment);
     if (input.value.trim() === '') return;
     console.log('generate - js');
+    console.log(input.value);
+    console.log(input.value.split('.'));
+    const options = {
+      syntax: document.getElementById(id.selectOptionSyntax).value,
+    };
+    const jsComment = new CommentTemplate('js', options);
+    const array = input.value.split('.');
+    const { rootString, finalString } = jsComment.getString(array);
+    const html =
+      `<div>rootString: ${rootString}</div>` +
+      `<div>finalString: ${finalString}</div>`;
+    console.log('stringHTML: ', html);
+    document.getElementById(id.renderOutputZone).textContent = finalString;
   }
 }
 

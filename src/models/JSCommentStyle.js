@@ -22,25 +22,26 @@ class JSCommentStyle extends CommentStyle {
       if (l > 0) {
         const { syntax } = this.options;
         if (syntax === syntaxOptions.block1) {
-          finalString = input
-            .map((row, index) => {
-              const r = row.trim();
-              const space = r === '' ? '' : this.space;
-              if (index === 0) return this.first + space + r;
-              if (index === input.length - 1) return r + space + this.last;
-              return r;
-            })
-            .join('\n');
+          const first =
+            input[0].trim() === ''
+              ? this.first
+              : this.first + this.space + input[0].trim();
+          const last = input[input.length - 1].trim()
+            ? this.last
+            : input[input.length - 1].trim() + this.space + this.last;
+          finalString = input.map((row) => row.trim());
+          finalString.unshift(first); // first
+          finalString.push(last); // last
+          finalString = finalString.join('\n');
         } else if (syntax === syntaxOptions.block2) {
-          finalString = input
-            .map((row, index) => {
-              const r = row.trim();
-              if (index === 0) return this.first;
-              if (index === input.length - 1) return this.space + this.last;
-              const space = r === '' ? '' : this.space;
-              return `${this.space}*${space}${r}`;
-            })
-            .join('\n');
+          finalString = input.map((row, index) => {
+            const r = row.trim();
+            const space = r === '' ? '' : this.space;
+            return `${this.space}*${space}${r}`;
+          });
+          finalString.unshift(this.first); // first
+          finalString.push(this.space + this.last); // last
+          finalString = finalString.join('\n');
         } else {
           finalString = input
             .map((row) => this.first + this.space + row.trim())
