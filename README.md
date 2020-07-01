@@ -1,6 +1,8 @@
 # iz-string-template
 Generate comment string. JS Comment and HTML Comment.
 # Usage:
+`npm install`
+
 `npm run build`
 
 In `dist` folder you will see `comments-generate.js` file.
